@@ -6,6 +6,7 @@ let operator=''
 //The displays on the calculator
 const previousOperandTextElement=document.querySelector('[data-previous-operand]')
 const currenrOperandTextElement=document.querySelector('[data-current-operand]')
+window.addEventListener('keydown', handleKeyPress)
 
 //The buttons on the calculator
 const numberBtns=document.querySelectorAll('[data-number]')
@@ -36,6 +37,10 @@ operationBtns.forEach(btn =>{
 });
 //Passes the number clicked into the currentOperand display
 function handleNumber(number){
+    if(previousNum!=='' && currentNum!=='' && operator===''){
+        previousNum=''
+        currenrOperandTextElement=currentNum
+    }
     if(currentNum.length<=11){
         currentNum+= number;
         currenrOperandTextElement.textContent=currentNum;
@@ -79,9 +84,10 @@ function calculate(){
   displayResults();
 }
 function displayResults(){
-    previousOperandTextElement.textContent='';
     currenrOperandTextElement.textContent=previousNum;
-    operator='';
+    previousOperandTextElement.textContent='';
+    operator=''
+    currentNum=''
 }
 // clear everything function
 function clearCalc (){
@@ -91,3 +97,38 @@ function clearCalc (){
     currenrOperandTextElement.textContent='0';
     previousOperandTextElement.textContent='';
 }
+function handleKeyPress(e){
+e.preventDefault()
+if(e.key>=0 && e.key<=9){
+    handleNumber(e.key);
+}
+if(
+    e.key === 'Enter'||
+    (e.key=== '=' && currentNum != '' && previousNum !='')
+){
+    calculate();
+}
+if(e.key=== '+' || e.key=== '-' || e.key=== '*'){
+    handleOperator(e.key)
+}
+if(e.key=== '/'){
+    handleOperator('÷')
+
+}
+if(e.key==='Backspace'){
+    handleDelete();
+}
+}
+function handleDelete() {
+    if (currentNum !== "") {
+      currentNum = currentNum.slice(0, -1);
+      currenrOperandTextElement.textContent = currentNum;
+      if (currentNum === "") {
+        currenrOperandTextElement.textContent = "0";
+      }
+    }
+    if (currentNum === "" && previousNum !== "" && operator === "") {
+      previousNum = previousNum.slice(0, -1);
+      currenrOperandTextElement.textContent = previousNum;
+    }
+  }
