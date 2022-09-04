@@ -13,7 +13,8 @@ const operationBtns=document.querySelectorAll('[data-operation]')
 const equalsButton=document.querySelector('[data-equals]')
 equalsButton.addEventListener('click', calculate);
 const deleteButton=document.querySelector('[data-delete]')
-const allCleaButtonr=document.querySelector('[data-all-clear]')
+const allClearButtonr=document.querySelector('[data-all-clear]')
+allClearButtonr.addEventListener('click', allClear);
 
 //Passes the number clicked on to the hanldeNumber() function
 numberBtns.forEach(btn =>{
@@ -25,15 +26,16 @@ numberBtns.forEach(btn =>{
 //Passes the operator clicked on to the hanldeNumber() function
 operationBtns.forEach(btn =>{
     btn.addEventListener('click', (e) =>{
-        handleOperator(e.target.textContent)
-
+        if(previousNum===''){
+            handleOperator(e.target.textContent)   
+        }
     });
 });
 //Passes the number clicked into the currentOperand display
 function handleNumber(number){
     if(currentNum.length<=11){
         currentNum+= number;
-    currenrOperandTextElement.textContent=currentNum;
+        currenrOperandTextElement.textContent=currentNum;
     }   
 }
 //Passes the operator and the currentOperand display & switches it to previousOperand & resets currentOperand
@@ -43,6 +45,7 @@ function handleOperator(op){
     previousOperandTextElement.textContent=previousNum +' '+ operator;
     currentNum='';
     currenrOperandTextElement.textContent='';
+    
 }
 
 function calculate(){
@@ -54,4 +57,12 @@ function calculate(){
     }
     previousOperandTextElement.textContent='';
     currenrOperandTextElement.textContent=previousNum;
+}
+//deletes everything function
+function allClear (currentNum,previousNum,operator){
+    currentNum=''
+    previousNum=''
+    operator=''
+    currenrOperandTextElement.textContent=currentNum;
+    previousOperandTextElement.textContent=previousNum;
 }
